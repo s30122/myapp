@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <title>Home Page</title>
+    </head>
+
+    <body>
+        <button id="btn_query">Query</button>
+        <button id="btn_delete_all">delete all product</button> <br />
+        <input
+            type="text"
+            id="txt_product_id_1"
+            placeholder="input a product id"
+        />
+        <button id="btn_inquiry">Inquiry</button>
+        <button id="btn_delete_one">delete by id</button> <br />
+        <input
+            type="text"
+            id="txt_product_id_2"
+            placeholder="input a product id"
+        />
+        <input
+            type="text"
+            id="txt_product_name"
+            placeholder="input a product name"
+        />
+        <input type="text" id="txt_product_price" placeholder="input price" />
+        <button id="btn_add">Add</button> 
+        <button id="btn_update">Update</button>
+        <hr />
+        <div id="demo"></div>
+        <script>
+            document.getElementById("btn_query").onclick = query;
+            document.getElementById("btn_delete_all").onclick = deleteAll;
+            document.getElementById("btn_inquiry").onclick = inquiry;
+            document.getElementById("btn_delete_one").onclick = deleteOne;
+            document.getElementById("btn_add").onclick = add;
+            document.getElementById("btn_update").onclick = update;
+
+
+            function query() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = xhrCallback;
+                xhttp.open("GET", "/api", true);
+                xhttp.send();
+            }
+            function deleteAll() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = xhrCallback;
+                xhttp.open("DELETE", "/api", true);
+                xhttp.send();
+            }
+            function inquiry() {
+                var id=document.getElementById('txt_product_id_1').value;
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = xhrCallback;
+                xhttp.open("GET", "/api/"+id, true);
+                xhttp.send();
+            }
+            function deleteOne() {
+                var id=document.getElementById('txt_product_id_1').value;
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = xhrCallback;
+                xhttp.open("DELETE", "/api/"+id, true);
+                xhttp.send();
+            }
+            function add() {
+                var id=document.getElementById('txt_product_id_2').value;
+                var name=document.getElementById('txt_product_name').value;
+                var price=Number(document.getElementById('txt_product_price').value);
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = xhrCallback;
+                xhttp.open("POST", "/api", true);
+                xhttp.setRequestHeader(
+                    "Content-type",
+                    "application/x-www-form-urlencoded"
+                );
+                xhttp.send(`id=${id}&name=${name}&price=${price}`);
+            }
+
+            function update() {
+                var id=document.getElementById('txt_product_id_2').value;
+                var name=document.getElementById('txt_product_name').value;
+                var price=Number(document.getElementById('txt_product_price').value);
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = xhrCallback;
+                xhttp.open("PUT", "/api", true);
+                xhttp.setRequestHeader(
+                    "Content-type",
+                    "application/x-www-form-urlencoded"
+                );
+                xhttp.send(`id=${id}&name=${name}&price=${price}`);
+            }
+
+
+
+            function xhrCallback() {
+                document.getElementById("demo").innerHTML = "";
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById(
+                        "demo"
+                    ).innerHTML = this.responseText;
+                }
+            }
+        </script>
+    </body>
+</html>
